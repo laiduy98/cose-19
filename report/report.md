@@ -127,43 +127,7 @@ To be more precise, the number of files that we can work with in the directory i
 
 During this project, we agreed to work only with english-written articles. That is why we made an analysis that you can see on an image below. As can be observed most of the articles are meeting the requirements. In addition to that, papers that do not respond to the criteria(*check the spelling*) will be deleted in the preprocessing part.
 
-![Language percentage in the dataset](assets/images/lang.png)
-
-# Preprocessing
-
-The second part of this project is preprocessing. This step will first clean the data, including transfer the JSON file that be used in the dataset to pandas dataframe, which is more common to process. In the preprocessing block, we will remove the row with duplicated and empty abstract
-
-## Handling multiple languages
-
-As in the data explore, more than 95% of papers are written in English. To detect the language that is written in the paper, we use a library called langdetect to do it. To speed up the language detect process we will not detect the language of the whole body but only detect on the first part.
-
-```python
-# loop through each text
-for ii in tqdm(range(0,len(df_covid))):
-    text = df_covid.iloc[ii]['body_text'].split(" ")
-    lang = "en"
-
-    # only take first 50 words
-    try:
-        if len(text) > 50:
-            lang = detect(" ".join(text[:50]))
-        elif len(text) > 0:
-            lang = detect(" ".join(text[:len(text)]))
-
-    # if first 50 words does not work do on the whole text
-    except Exception as e:
-        all_words = set(text)
-        try:
-            lang = detect(" ".join(all_words))
-
-        if the body not work try the abstract instead
-        except Exception as e:         
-            try:
-                lang = detect(df.iloc[ii]['abstract_summary'])
-            except Exception as e:
-                lang = "unknown"
-                pass
-```
+To detect the language that is written in the paper, we use a library called langdetect to do it. To speed up the language detect process we will not detect the language of the whole body but only detect on the first part.
 
 - Try to detect on the first 50 words of the body text, if the number of words is lower than 50, take the whole text instead.
 
@@ -185,6 +149,29 @@ except Exception as e:
         lang = "unknown"
 ```
 
+- In other case, mark the language as unknown.
+
+This is the final result when we randomly pick 10000 papers. It is obviously that the most out of dataset is written in English.
+
+![Language percentage in the dataset](assets/images/lang.png)
+
+# Preprocessing
+
+The second part of this project is preprocessing. This step will first clean the data, including transfer the JSON file that be used in the dataset to pandas dataframe, which is more common to process. In the preprocessing block, we will remove the row with duplicated and empty abstract.
+
+## Handling multiple languages
+
+As in the data explore, more than 95% of papers are written in English. We have already add a new column named ```language``` in the dataframe. It could be easily filtered out with
+
+```python
+df = df_covid[df_covid['language'] == 'en'] 
+```
+
+## Change from JSON to a more convinient format
+
+```json
+
+```
 
 ## Special characters and number remove
 
