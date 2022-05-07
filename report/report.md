@@ -37,33 +37,31 @@ header-includes:
 
 # Abstract
 
-COVID-19 is the disease that caused by the Sar-COV-2 virus, commence in China at the end of the year 2019. Over the time, studies show that there is some form of background diseases and risk factors that can hugely affect the severity cases rate of COVID-19. This study will apply NLP as well as text mining and exploration on the CORD-19 dataset to extract which background diseases and risk factors play the main role for the problem, hence researcher may produce a method to reduce rate.
+COVID-19 is the disease that caused by the Sar-COV-2 virus that started in China at the end of the year 2019. Over the time, studies has shown that there is some form of background diseases and risk factors that can hugely affect the severity cases rate of COVID-19. This study will apply NLP and text mining methods in order to explore CORD-19 dataset and extract background diseases and risk factors. 
 
 ![Cormobilities and symtoms of COVID-19 cases](assets/images/risk_factor.jpeg)
 
 # Introduction
 
-In this project, we will apply processing over the CORD-19 dataset. First we will take the metadata of the dataset and use the abstract of each paper for clustering using LDA.
+While working on this project, we applied text-processing on CORD-19 dataset. CORD-19 is a data collection of over one million scholarly articles, including over 350,000 with full text, about COVID-19, SARS-CoV-2, and related coronaviruses. The amount of data collected in CORD-19 provided an opportunity for a deep and various analysis, and allowed us to apply different NLP techniques such as LDA(Latent Dirichlet Allocation) and NER(Named-entity recognition). In this block, the structure of our project will be explained. 
 
-These are processes that we have done in this project.
+The coding process consisted of 4 parts: Data Exploration, Preprocessing, Data selection, Named-entity recognition application.
 
 - Data Exploration
 
 - Preprocessing
-    - Reformat data json to dataframe
-    - Remove all non-english paper
-    - Tokenize
-    - Remove stopword
-    - Stemming
-    - Lemmatisation
-
-After the dataset is preprocessed
+    - Reformating the json data to csv dataframe.
+    - Removing all non-english paper.
+    - Tokenizing.
+    - Removing stopwords.
+    - Stemming.
+    - Lemmatisation.
  
 - Data selection
-    - Choose only paper that talk about risk factor and/or severity
-    - Clustering using LDA
+    - Selecting articles with risk factor and/or severity key-words.
+    - Clustering using Latent Dirichlet Allocation.
 
-- Apply NER (Named-entity recognition) with selected paper.
+- Applying NER (Named-entity recognition).
 
 ![Data processing flow](assets/images/introduction_diagram.jpeg)
 
@@ -71,7 +69,7 @@ After the dataset is preprocessed
 
 ## Dataset information
 
-Before go to preprocessing part, We would like to know some fundamental information of the dataset. 
+In this We would like to know some fundamental information of the dataset. 
 
 - The metadata csv file shows that there are more than a milion paper that in the data set.
 
