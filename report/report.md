@@ -167,11 +167,12 @@ except Exception as e:
         lang = "unknown"
 ```
 
-- In other case, mark the language as unknown.
+- In other case, the language marked as unknown.
+
 
 ![Language percentage in the dataset](assets/images/lang.png)
 
-This is the final result when we randomly pick 10000 papers. It is obviously that the most out of dataset is written in English.
+For the final dataframe we randomly picked 10000 english-written papers. It is obviously that the most out of dataset is written in English.
 
 
 
@@ -201,10 +202,6 @@ df = df_covid[df_covid['language'] == 'en']
 
 The original data is collected in json format, where each file is a representation of an article. However, it is impossible to use
 python preprocessing libraries on json artciles. We solved this issue by transfering all data from json collection into Pandas Data Frame.
-
-```json
-
-```
 
 ## Removing special characters and numbers
 
@@ -256,35 +253,63 @@ Our NER model is special because it can detect diseases that are in science pape
 
 # Topic modeling
 
-## Latent Dirichlet Allocation
-
-After check the 
+This is how LDA works.
 
 - Providing to an algorithm a certain number of topics. 
 - The algorithm is assigning every word to a temporary topic.
 - The algorithm is checking and updating topic assignments.
 
+To choose the appropriate number of topic, we need to run in every topic number and use a method to evaluate. We will use cv coherence score in this case.
 
 ## Evaluation method: coherence score
 
-For the evaluation method we used the coherence score. Coherence score in topic modeling is a measure of how interpretable the topics are to humans. In this case, topics are represented as the top N words with the highest probability of belonging to that particular topic. Briefly, the coherence score measures how similar these words are to each other. The higher the c_v coherence score is, the more suitable the topic number should be.
+For the evaluation method we used the coherence score. Coherence score in topic modeling is a measure of how interpretable the topics are to humans. In this case, topics are represented as the top N words with the highest probability of belonging to that particular topic. 
+
+![LDA iteration=50](assets/images/lda_2.png){ width=50% }
+
+Briefly, the coherence score measures how similar these words are to each other. The higher the c_v coherence score is, the more suitable the topic number should be.
+
+
+![LDA iteration=30](assets/images/lda_1.png){ width=50% }
 
 We will try to run it in the range of 3 to 11 topics and see which of the number of topics perform the best.
 
-![LDA 1](assets/images/lda_1.png){ width=50% }
-
-![LDA 2](assets/images/lda_2.png){ width=50% }
-
 
 Each time we iterate the c_v coherence score, the value varies. However, for the next step, we decided to work with the data from topic 6.
+
+
+## Final dicision in applying Latent Dirichlet Allocation
+
+Run LDA with topic number == 6.
+
+```python
+lda_model = LdaMulticore(corpus=corpus_risk_article,
+                        id2word=id2token_risk_article,
+                        num_topics=6, 
+                        random_state=98,
+                        chunksize=100,
+                        passes=10,
+                        iterations=50,
+                        decay=0.5,
+                        per_word_topics=True,)
+```
+
 
 Top of the keyword for each topic.
 
 ![Top keywords for each cluster](assets/images/top_word_lda.png)
 
+After examination of the most significant keywords, we made the conclusion that topic 3 was the closest to severity symptoms. Topic 3 has the following  keywords: ‘mortality’, ‘high’, ‘risk’, ‘patient’, ‘case’, ‘severe’, etc. Then, we extracted all documents from the topic 3. Having all papers filtered, we can transfer them to the NER model. 
 
-## Apply T-SNE to draw 2d map for the topics
+By extract the document's topic by using `get_document_topics` method, we have the percentage of each topic contain in the document. We label the document by the highest percentage of a topic that contain in the document.
 
+```python
+document_topic = lda_model.get_document_topics(corpus_risk_article[i])
+document_topic_distribution.append(document_topic)
+for idx,document_topic in enumerate(document_topic_distribution):
+    for topic_idx,prob in document_topic:
+        document_topic_matrix[idx][topic_idx] = prob
+```
 
 
 # Named-identity recognition
@@ -419,14 +444,10 @@ These are the final disease that our method pulled out from the CORD-19 dataset.
 
 # Future improvement
 
-Speaking of future improvements, it is important to emphasize two important things.
+Speaking of future improvements, it is important to emphasize two things.
 
 First of all, it would be crucial to create a knowledge graph in order to see the relationships between different symptoms and diseases. We are sure that constructing a knowledge graph may give us a more profound and deep image of connections between severity cases and symptoms. It is a very powerful technique and can be used by researchers in order to prevent some severe cases by knowing that some diseases can lead to severe covid. 
 
 Secondly, while working on this project, we found out that, in order to make this project more complex, it is important to calculate the severity rate in order to know which disease is less or more severe. To sum it up, we are hoping to continue to work on this project and implement all this improvement in future.
 
-
-# References
-
-https://github.com/allenai/cord19 - this for the metadata desrp
 
