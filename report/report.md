@@ -200,14 +200,11 @@ text = re.sub(r'[^\w\s]', '', str(text).lower().strip())
 ## Tokenization
 A tokenization process divides data into chunks of information that can be considered as discrete elements. The token occurrences in a document can be used directly as a vector representing that document.
 
-A tokenization process divides data into chunks of information that can be considered as discrete elements. The token occurrences in a document can be used directly as a vector representing that document.
 
 In this case we used ```split()``` method to tokenize the data.
 
 ## Stemming
 Stemming is a natural language processing technique that lowers restore words to their root forms, hence aiding in the preprocessing of text, words, and documents for text normalization.
-
-Stemming is a natural language processing technique that lowers restore words to their root forms, hence aiding in the preprocessing of text, words, and documents for text normalization. The performance of NLP might be affected with out stemming.
 
 ```    
 if flg_stemm == True:
