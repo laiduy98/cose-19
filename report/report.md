@@ -129,9 +129,9 @@ To be more clear, the number of files that we can work with in the directory is 
 
 During this project, we agreed to work only with english-written articles. That is why we made an analysis that you can see on an image below. As can be observed most of the articles are meeting the requirements. In addition to that, papers that do not respond to the criteria will be deleted in the preprocessing part.
 
-In order to detect english-written papers, we used a library called ```langdetect```. To speed up the language detecting process we used only first 50 words from a body text. The practice shows that this amount of words is enough to 
+In order to detect english-written papers, we used a library called ```langdetect```. To speed up the language detecting process we used only first 50 words from a body text. The practice shows that this amount of words is enough for algorithm to understand if it's english language or not.
 
-- Try to detect on the first 50 words of the body text, if the number of words is lower than 50, take the whole text instead.
+- This part of the code is trying to analyse the first 50 words of the body text, however if the number of words is lower than 50, the whole text is analysed.
 
 ```python
 if len(text) > 50:
@@ -140,9 +140,7 @@ elif len(text) > 0:
         lang = detect(" ".join(text[:len(text)]))
 ```
 
-- If first 50 words does not work, try to detect with the whole body.
-
-- If we cannnot detect the language using the body part, try to detect on the abstract.
+- If the detection of the language is impossible when using the body part, the algorithm will try to do the same job but with an abstract.
 
 ```python
 try:
