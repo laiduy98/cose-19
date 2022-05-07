@@ -65,6 +65,8 @@ The coding process consisted of 4 parts: Data Exploration, Preprocessing, Data s
 
 ![Data processing flow](assets/images/introduction_diagram.jpeg)
 
+
+
 # Data exploration
 
 In this part we will cover the main features that we discovered during the data exploration. The successful outcome of this block helped us to apply preprocessing and understood the data we were working with. It is important to mention, that in this part we used only metadata dataset which contained all useful information for the analysis. 
@@ -151,14 +153,17 @@ except Exception as e:
 
 - In other case, mark the language as unknown.
 
-This is the final result when we randomly pick 10000 papers. It is obviously that the most out of dataset is written in English.
-
 ![Language percentage in the dataset](assets/images/lang.png)
 
-# Preprocessing
+This is the final result when we randomly pick 10000 papers. It is obviously that the most out of dataset is written in English.
+
+
+
+# Data preprocessing
 
 The second part of this project is data preprocessing. It's important to mention, that at this step, we are using not only the metadata dataset, but also we are working with full collection of articles.
-- Transfering the JSON to CSV format
+
+- Filter necessary information from metadata and body_text in JSON files.
 - Dropping non-english papers
 - Cleaning the data
    - Removing special characters 
@@ -176,7 +181,7 @@ As we mentioned earlier, approximately 95% of papers are written in English. To 
 df = df_covid[df_covid['language'] == 'en'] 
 ```
 
-## Transfering the JSON to Data Frame format
+## Transfering the JSON to Pandas Dataframe format
 The original data is collected in json format, where each file is a representation of an article. However, it is impossible to use
 python preprocessing libraries on json artciles. We solved this issue by transfering all data from json collection into Pandas Data Frame.
 
@@ -226,39 +231,179 @@ if flg_lemm == True:
 
 ## Risk factor and severe paper filtering
 
+Before applying NER, we sorted papers in a dataframe with a common topic, such as severe  symptoms and risk factors. In order to do it right and in an objective way, we filtered out papers that contained one of the words that was related to risk factors or severity in a predefined dictionary. You can observe the key-words in a word cloud below.
+
 ![WordCloud of significant word in filtered list of paper](assets/images/data_preprocessing_1.png)
 
 
-# Clustering
+## Data processing
 
+At this point of our project, the data is clean and sorted. It means that it is suitable for NLP-training. 
 
+The first thing we did was Topic Modeling using Latent Dirichlet Allocation(LDA). LDA is a generative statistical model that allows sets of observations to be explained by unobserved groups that explain why some parts of the data are similar. It was crucial for us to use LDA because by using topic modeling we discovered a range of articles that was very close to our project theme: risk factors, severity, severe,etc. After successfully applying LDA and choosing the right topic, we fitted our model with the NER. NER  — (Named Entity Recognition)  is a subtask of information extraction that seeks to locate and classify named entities mentioned in unstructured text into predefined categories such as person names, organizations, locations, medical codes, time expressions, quantities, monetary values, percentages, etc. 
+
+Our NER model is special because it can detect diseases that are in science papers.
+
+# Topic modeling
+
+## Latent Dirichlet Allocation
+
+After check t
+
+- You tell the algorithm how many topics you think there are. 
+- The algorithm will assign every word to a temporary topic.
+- The algorithm will check and update topic assignments.
+
+## Evaluation method: coherence score
+
+We can use the coherence score in topic modeling to measure how interpretable the topics are to humans. In this case, topics are represented as the top N words with the highest probability of belonging to that particular topic. Briefly, the coherence score measures how similar these words are to each other. The higher the c_v coherence score is, the more suitable the topic number should be.
+
+We will try to run it in the range of 3 to 11 topics.
 
 ![LDA 1](assets/images/lda_1.png){ width=50% }
 
-t
-
-t
-
-t
-
 ![LDA 2](assets/images/lda_2.png){ width=50% }
+
+
+Each time we rerun the c_v coherence score with different iteration, the score varies. We decided to choose the number of topic is 6 for the next step.
+
 
 # Named-identity recognition
 
-Scispacy
-t
-t
+Scispacy is a library contain SpaCy models for biomedical text processing. In this step, we will use pretrained model based on BC5CDR corpus. This model can be install through Scispacy with `en_ner_bc5cdr_md`.
 
-t
-t
 
-t
+```python
+import scispacy
+import spacy
+nlp_model_bc5cdr = spacy.load("en_ner_bc5cdr_md")
+```
+- Load in `en_ner_bc5cdr_md`.
 
+```python
+entities = []
+labels = []
+position_start = []
+position_end = []
+
+for body_text in tqdm(df['body_text_clean'][:200]):
+    doc = nlp(body_text)
+    
+
+    for ent in doc.ents:
+        entities.append(ent.text)
+        labels.append(ent.label_)
+        position_start.append(ent.start_char)
+        position_end.append(ent.end_char)
+
+    named_entities_df = pd.DataFrame({'Entities':entities,'Labels':labels,'Position_Start':position_start, 'Position_End':position_end})
+```
+
+- Create dictionary that contains extracted entities.
+
+```python
+df_disease = named_entities_df.drop_duplicates(subset=['Entities'])
+```
+
+- Only take line that labeled `DISEASE` and export final file.
+
+```python
+df_disease = df_disease[df_disease['Labels'] == 'DISEASE]
+df_disease.to_csv('disease.csv')
+```
+
+
+
+# Result
+
+Head of the file `disease.csv`
+
+| 0   | chronic obstructive pulmonary disease copd                                                                                                   | DISEASE |
+|-----|----------------------------------------------------------------------------------------------------------------------------------------------|---------|
+| 1   | death                                                                                                                                        | DISEASE |
+| 3   | copd                                                                                                                                         | DISEASE |
+| 9   | dyspnea                                                                                                                                      | DISEASE |
+| 10  | cough                                                                                                                                        | DISEASE |
+| 11  | copd pulmonary function                                                                                                                      | DISEASE |
+| 13  | respiratory tract infection                                                                                                                  | DISEASE |
+| 14  | chronic unstable disease system malignancy                                                                                                   | DISEASE |
+| 19  | obstructive pulmonary disease                                                                                                                | DISEASE |
+| 21  | copd airflow                                                                                                                                 | DISEASE |
+| 25  | hypertension                                                                                                                                 | DISEASE |
+| 26  | atherosclerotic heart disease                                                                                                                | DISEASE |
+| 27  | bronchiectasis                                                                                                                               | DISEASE |
+| 43  | respiratory doctor small number                                                                                                              | DISEASE |
+| 45  | critically ill                                                                                                                               | DISEASE |
+| 46  | chronic disease community                                                                                                                    | DISEASE |
+| 47  | chronic disease                                                                                                                              | DISEASE |
+| 57  | respiratory muscle reset sensitivity respiratory center co improve sleep quality                                                             | DISEASE |
+| 60  | hypercapnia                                                                                                                                  | DISEASE |
+| 65  | copd p                                                                                                                                       | DISEASE |
+| 69  | pneumococcal disease                                                                                                                         | DISEASE |
+| 72  | hypertension diabetes copd                                                                                                                   | DISEASE |
+| 73  | pneumonia                                                                                                                                    | DISEASE |
+| 80  | copd asthma steroidrelated                                                                                                                   | DISEASE |
+| 84  | cellsμl                                                                                                                                      | DISEASE |
+| 103 | reduction ae frequency helped maintain lung function                                                                                         | DISEASE |
+| 112 | coronavirus disease                                                                                                                          | DISEASE |
+| 113 | covid selflimiting disease                                                                                                                   | DISEASE |
+| 115 | acute respiratory syndrome coronavirus sarscov nucleic acid                                                                                  | DISEASE |
+| 116 | fever cough shortness breath                                                                                                                 | DISEASE |
+| 117 | infection                                                                                                                                    | DISEASE |
+| 118 | presymptomatic severe presymptomatic covid                                                                                                   | DISEASE |
+| 119 | presymptomatic nonsevere presymptomatic covid                                                                                                | DISEASE |
+| 123 | coronavirus pneumonia                                                                                                                        | DISEASE |
+| 127 | respiratory distress                                                                                                                         | DISEASE |
+| 131 | respiratory failure                                                                                                                          | DISEASE |
+| 132 | shock                                                                                                                                        | DISEASE |
+| 133 | organ failure                                                                                                                                | DISEASE |
+| 134 | hypertension diabetes cardiovascular disease cerebrovascular disease cancer chronic obstructive pulmonary disease                            | DISEASE |
+| 135 | kidney disease                                                                                                                               | DISEASE |
+| 136 | liver disease immunodeficiency                                                                                                               | DISEASE |
+| 138 | illness respectively commonest symptom symptomatic patient disease                                                                           | DISEASE |
+| 139 | admission fever n cough n shortness breath                                                                                                   | DISEASE |
+| 140 | respiratory distress fatigue                                                                                                                 | DISEASE |
+| 141 | muscle soreness                                                                                                                              | DISEASE |
+| 142 | diarrhea                                                                                                                                     | DISEASE |
+| 143 | headache                                                                                                                                     | DISEASE |
+| 144 | dizziness                                                                                                                                    | DISEASE |
+| 145 | nausea n vomiting                                                                                                                            | DISEASE |
+| 148 | hypertension diabetes                                                                                                                        | DISEASE |
+| 149 | groundglass opacity                                                                                                                          | DISEASE |
+| 150 | pleural thickening                                                                                                                           | DISEASE |
+| 151 | pleural effusion                                                                                                                             | DISEASE |
+| 155 | liver kidney common                                                                                                                          | DISEASE |
+| 156 | heart liver function                                                                                                                         | DISEASE |
+| 160 | lymphocytopenia                                                                                                                              | DISEASE |
+| 163 | nonseverely ill                                                                                                                              | DISEASE |
+| 164 | pandemic sarscov infection                                                                                                                   | DISEASE |
+| 166 | heart liver kidney                                                                                                                           | DISEASE |
+| 167 | abnormal c abnormal rate organ including heart liver kidney fold normal range d value laboratory indicator admission vertical axis indicates | DISEASE |
+| 169 | respiratory distress syndrome                                                                                                                | DISEASE |
+| 170 | sepsis congestive heart failure                                                                                                              | DISEASE |
+| 172 | lower respiratory tract infection                                                                                                            | DISEASE |
+| 173 | bacterial spectrum pulmonary coinfections superinfection                                                                                     | DISEASE |
+| 176 | tumor necrosis                                                                                                                               | DISEASE |
+| 177 | presymptomatic nonsevere presymptomatic patient based laboratory                                                                             | DISEASE |
+| 178 | stage disease                                                                                                                                | DISEASE |
+| 179 | bronchopulmonary dysplasia                                                                                                                   | DISEASE |
+| 180 | neurodevelopmental impairment                                                                                                                | DISEASE |
+| 181 | lung injury alveolar growth arrest                                                                                                           | DISEASE |
+| 184 | fibrosis                                                                                                                                     | DISEASE |
+| 189 | death bpddeath                                                                                                                               | DISEASE |
+| 192 | chorioamnionitis                                                                                                                             | DISEASE |
+| 193 | infection sepsis                                                                                                                             | DISEASE |
 
 # Future improvement
 
-Knowledge graph
+Speaking of future improvements, it is important to emphasize two important things.
+
+First of all, it would be crucial to create a knowledge graph in order to see the relationships between different symptoms and diseases. We are sure that constructing a knowledge graph may give us a more profound and deep image of connections between severity cases and symptoms. It is a very powerful technique and can be used by researchers in order to prevent some severe cases by knowing that some diseases can lead to severe covid. 
+
+Secondly, while working on this project, we found out that, in order to make this project more complex, it is important to calculate the severity rate in order to know which disease is less or more severe. To sum it up, we are hoping to continue to work on this project and implement all this improvement in future.
+
 
 # References
 
 https://github.com/allenai/cord19 - this for the metadata desrp
+
