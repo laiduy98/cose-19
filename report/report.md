@@ -43,7 +43,7 @@ COVID-19 is the disease caused by the Sar-COV-2 virus that originated in China a
 
 # Introduction
 
-During this project we worked CORD-19 dataset. CORD-19 is a data collection of over one million scholarly articles, including over 350,000 with full text, about COVID-19, SARS-CoV-2, and related coronaviruses. The amount of data collected in CORD-19 is providing us an opportunity for a deep and various analysis, and allowed us to apply different NLP techniques such as LDA (Latent Dirichlet Allocation) and NER (Named-entity recognition). The main goal of this part is to present a structure of the project.
+During this project we worked CORD-19 dataset. CORD-19 is a data collection of over one million scholarly articles, including over 350,000 with full text, about COVID-19, SARS-CoV-2, and related coronaviruses. The amount of data collected in CORD-19 is providing us an opportunity for a deep and various analysis, and allowinh us to apply different NLP techniques such as LDA (Latent Dirichlet Allocation) and NER (Named-entity recognition). The main goal of this part is to present a structure of the project.
 
 The coding process consisted of 4 parts: Data Exploration, Preprocessing, Data selection, Named-entity recognition application.
 
@@ -127,7 +127,7 @@ To be more clear, the number of files that we can work with in the directory is 
 
 ## Language status of the dataset
 
-During this project, we agreed to work only with english-written articles. That is why we made an analysis that you can see on an image below. As can be observed most of the articles are meeting the requirements. In addition to that, papers that do not respond to the criteria will be deleted in the preprocessing part.
+During this project, we agreed to work only with english-written articles. That is why we made an analysis that you can see on an image below. As can be observed most of the articles are meeting the requirements. However, papers that do not respond to the criteria will be deleted in the preprocessing part.
 
 In order to detect english-written papers, we used a library called ```langdetect```. To speed up the language detecting process we used only first 50 words from a body text. The practice shows that this amount of words is enough for algorithm to understand if it's english language or not.
 
@@ -163,33 +163,31 @@ The second part of this project is data preprocessing. It's important to mention
 - Cleaning the data
    - Removing special characters 
    - Removing numbers
-   - Tokenisation
+   - Tokenization
    - Lemmatisation
    - Stemming
 - Removing rows with duplicated and empty abstracts
 
-## Transfering the JSON to Data Frame format
-The original data is collected in json format, where each file is a representation of an article. However, it is impossible to use
-python preprocessing libraries on json artciles. We solved this issue by transfering all data from json collection into Pandas Data Frame. (Duy put
-some code here)
 
 ## Handling multiple languages
 
-As in the data explore, more than 95% of papers are written in English. We have already add a new column named ```language``` in the dataframe. It could be easily filtered out with
+As we mentioned earlier, approximately 95% of papers are written in English. To sort them out we created a new column in our dataframe named ```language``` and then used the code below for creating a new dataset only with english-written papers. 
 
 ```python
 df = df_covid[df_covid['language'] == 'en'] 
 ```
 
-## Change from JSON to a more convinient format
+## Transfering the JSON to Data Frame format
+The original data is collected in json format, where each file is a representation of an article. However, it is impossible to use
+python preprocessing libraries on json artciles. We solved this issue by transfering all data from json collection into Pandas Data Frame.
 
 ```json
 
 ```
 
-## Special characters and number remove
+## Removing special characters and numbers
 
-Convert to lowercase and remove punctuations and characters and then strip.
+In this part of data preprocessing we removed all numbers and special characters(dots, commas, etc) using the python ```regex``` library.
 
 ```
 text = re.sub(r'[^\w\s]', '', str(text).lower().strip())
@@ -198,10 +196,12 @@ text = re.sub(r'[^\w\s]', '', str(text).lower().strip())
 ```
 
 ## Tokenization
+A tokenization process divides data into chunks of information that can be considered as discrete elements. The token occurrences in a document can be used directly as a vector representing that document.
 
-Simply using ```split()``` to tokenize the data.
+In this case we used ```split()``` method to tokenize the data.
 
 ## Stemming
+Stemming is a natural language processing technique that lowers restore words to their root forms, hence aiding in the preprocessing of text, words, and documents for text normalization.
 
 ```    
 if flg_stemm == True:
@@ -210,8 +210,7 @@ if flg_stemm == True:
 ```
 
 ## Lemmatisation
-
-
+Lemmatization is aslo a NLP technique which is used to reduce words to a normalized form.
 
 ```
 if flg_lemm == True:
