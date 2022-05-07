@@ -43,19 +43,19 @@ COVID-19 is the disease caused by the Sar-COV-2 virus that originated in China a
 
 # State of the art
 
-In this project, we will use multiple state of the art library in data science and NLP field.
+In this project we used multiple state of the art NLP and Data Science libraries. 
 
-- Numpy, Pandas: Data format and calculation
+- Numpy, Pandas: Formatting the data the and calculations.
 
-- Matplotlib: Draw chart and figures
+- Matplotlib: Library for drawing the charts and figures.
 
-- Scikitlearn: We will use LDA and TSNE from this library
+- Scikitlearn: LDA and TSNE models.
 
-- Spacy, Gensim and NLTK: these are some fundamental libraries that used
+- Spacy, Gensim and NLTK: Important NLP libraries.
 
-- Scispacy: Spacy model for science paper
+- Scispacy: NER, Spacy model for science papers.
 
-- Bokeh: draw interacted chart
+- Bokeh: A library for drawing interacted charts.
 
 # Data flow
 
