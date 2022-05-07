@@ -41,7 +41,23 @@ COVID-19 is the disease caused by the Sar-COV-2 virus that originated in China a
 
 ![Cormobilities and symtoms of COVID-19 cases](assets/images/risk_factor.jpeg)
 
-# Introduction
+# State of the art
+
+In this project, we will use multiple state of the art library in data science and NLP field.
+
+- Numpy, Pandas: Data format and calculation
+
+- Matplotlib: Draw chart and figures
+
+- Scikitlearn: We will use LDA and TSNE from this library
+
+- Spacy, Gensim and NLTK: these are some fundamental libraries that used
+
+- Scispacy: Spacy model for science paper
+
+- Bokeh: draw interacted chart
+
+# Data flow
 
 During this project we worked CORD-19 dataset. CORD-19 is a data collection of over one million scholarly articles, including over 350,000 with full text, about COVID-19, SARS-CoV-2, and related coronaviruses. The amount of data collected in CORD-19 is providing us an opportunity for a deep and various analysis, and allowinh us to apply different NLP techniques such as LDA (Latent Dirichlet Allocation) and NER (Named-entity recognition). The main goal of this part is to present a structure of the project.
 
@@ -182,8 +198,6 @@ df = df_covid[df_covid['language'] == 'en']
 ```
 
 ## Transfering the JSON to Pandas Dataframe format
-The original data is collected in json format, where each file is a representation of an article. However, it is impossible to use
-python preprocessing libraries on json artciles. We solved this issue by transfering all data from json collection into Pandas Data Frame.
 
 The original data is collected in json format, where each file is a representation of an article. However, it is impossible to use
 python preprocessing libraries on json artciles. We solved this issue by transfering all data from json collection into Pandas Data Frame.
@@ -205,11 +219,10 @@ text = re.sub(r'[^\w\s]', '', str(text).lower().strip())
 ## Tokenization
 A tokenization process divides data into chunks of information that can be considered as discrete elements. The token occurrences in a document can be used directly as a vector representing that document.
 
-
 In this case we used ```split()``` method to tokenize the data.
 
 ## Stemming
-Stemming is a natural language processing technique that lowers restore words to their root forms, hence aiding in the preprocessing of text, words, and documents for text normalization.
+Stemming is a natural language processing technique that lowers restore words to their root forms, hence aiding in the preprocessing of text, words, and documents for text normalization. The performance of NLP might be affected with out stemming.
 
 ```    
 if flg_stemm == True:
@@ -245,29 +258,38 @@ Our NER model is special because it can detect diseases that are in science pape
 
 ## Latent Dirichlet Allocation
 
-After check t
+After check the 
 
-- You tell the algorithm how many topics you think there are. 
-- The algorithm will assign every word to a temporary topic.
-- The algorithm will check and update topic assignments.
+- Providing to an algorithm a certain number of topics. 
+- The algorithm is assigning every word to a temporary topic.
+- The algorithm is checking and updating topic assignments.
+
 
 ## Evaluation method: coherence score
 
-We can use the coherence score in topic modeling to measure how interpretable the topics are to humans. In this case, topics are represented as the top N words with the highest probability of belonging to that particular topic. Briefly, the coherence score measures how similar these words are to each other. The higher the c_v coherence score is, the more suitable the topic number should be.
+For the evaluation method we used the coherence score. Coherence score in topic modeling is a measure of how interpretable the topics are to humans. In this case, topics are represented as the top N words with the highest probability of belonging to that particular topic. Briefly, the coherence score measures how similar these words are to each other. The higher the c_v coherence score is, the more suitable the topic number should be.
 
-We will try to run it in the range of 3 to 11 topics.
+We will try to run it in the range of 3 to 11 topics and see which of the number of topics perform the best.
 
 ![LDA 1](assets/images/lda_1.png){ width=50% }
 
 ![LDA 2](assets/images/lda_2.png){ width=50% }
 
 
-Each time we rerun the c_v coherence score with different iteration, the score varies. We decided to choose the number of topic is 6 for the next step.
+Each time we iterate the c_v coherence score, the value varies. However, for the next step, we decided to work with the data from topic 6.
+
+Top of the keyword for each topic.
+
+![Top keywords for each cluster](assets/images/top_word_lda.png)
+
+
+## Apply T-SNE to draw 2d map for the topics
+
 
 
 # Named-identity recognition
 
-Scispacy is a library contain SpaCy models for biomedical text processing. In this step, we will use pretrained model based on BC5CDR corpus. This model can be install through Scispacy with `en_ner_bc5cdr_md`.
+`Scispacy` is a library with different SpaCy models for biomedical text processing. In this step, we used a pretrained model based on BC5CDR corpus. This model can be installed through Scispacy with `en_ner_bc5cdr_md`.
 
 
 ```python
@@ -302,7 +324,7 @@ for body_text in tqdm(df['body_text_clean'][:200]):
 df_disease = named_entities_df.drop_duplicates(subset=['Entities'])
 ```
 
-- Only take line that labeled `DISEASE` and export final file.
+- Exporting the final file with only the `DISEASE` tag.
 
 ```python
 df_disease = df_disease[df_disease['Labels'] == 'DISEASE]
@@ -312,6 +334,8 @@ df_disease.to_csv('disease.csv')
 
 
 # Result
+
+As a final result we extracted the most common diseases that are connected with COVID-19. In order to make it more presentable, the table with a list of diseases was generated. 
 
 Head of the file `disease.csv`
 
@@ -390,6 +414,8 @@ Head of the file `disease.csv`
 | 189 | death bpddeath                                                                                                                               | DISEASE |
 | 192 | chorioamnionitis                                                                                                                             | DISEASE |
 | 193 | infection sepsis                                                                                                                             | DISEASE |
+
+These are the final disease that our method pulled out from the CORD-19 dataset. 
 
 # Future improvement
 
