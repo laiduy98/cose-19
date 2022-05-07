@@ -157,7 +157,21 @@ This is the final result when we randomly pick 10000 papers. It is obviously tha
 
 # Preprocessing
 
-The second part of this project is preprocessing. This step will first clean the data, including transfer the JSON file that be used in the dataset to pandas dataframe, which is more common to process. In the preprocessing block, we will remove the row with duplicated and empty abstract.
+The second part of this project is data preprocessing. It's important to mention, that at this step, we are using not only the metadata dataset, but also we are working with full collection of articles.
+- Transfering the JSON to CSV format
+- Dropping non-english papers
+- Cleaning the data
+   - Removing special characters 
+   - Removing numbers
+   - Tokenisation
+   - Lemmatisation
+   - Stemming
+- Removing rows with duplicated and empty abstracts
+
+## Transfering the JSON to Data Frame format
+The original data is collected in json format, where each file is a representation of an article. However, it is impossible to use
+python preprocessing libraries on json artciles. We solved this issue by transfering all data from json collection into Pandas Data Frame. (Duy put
+some code here)
 
 ## Handling multiple languages
 
