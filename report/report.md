@@ -37,13 +37,13 @@ header-includes:
 
 # Abstract
 
-COVID-19 is the disease caused by the Sar-COV-2 virus that originated in China at the end of the year 2019. Over the time, studies have shown that there is some form of background diseases and risk factors that can hugely affect the severity cases rate of COVID-19. This project will apply NLP and text mining methods in order to explore the CORD-19 dataset and extract background diseases and risk factors. 
+COVID-19 is the disease caused by the Sar-COV-2 virus that originated in China at the end of the year 2019. Over the time, studies have shown that there is some form of background diseases and risk factors that can hugely affect the severity cases rate of COVID-19. This project will apply NLP and text mining methods in order to explore the CORD-19 dataset and extract background diseases and risk factors.  
 
 ![Cormobilities and symtoms of COVID-19 cases](assets/images/risk_factor.jpeg)
 
 # Introduction
 
-While working on this project, we applied text-processing methods on CORD-19 dataset.(rephrase idk how) CORD-19 is a data collection of over one million scholarly articles, including over 350,000 with full text, about COVID-19, SARS-CoV-2, and related coronaviruses. The amount of data collected in CORD-19 is providing us an opportunity for a deep and various analysis, and allowed us to apply different NLP techniques such as LDA (Latent Dirichlet Allocation) and NER (Named-entity recognition). The main goal of this part is to present a structure of the project.
+During this project we worked CORD-19 dataset. CORD-19 is a data collection of over one million scholarly articles, including over 350,000 with full text, about COVID-19, SARS-CoV-2, and related coronaviruses. The amount of data collected in CORD-19 is providing us an opportunity for a deep and various analysis, and allowed us to apply different NLP techniques such as LDA (Latent Dirichlet Allocation) and NER (Named-entity recognition). The main goal of this part is to present a structure of the project.
 
 The coding process consisted of 4 parts: Data Exploration, Preprocessing, Data selection, Named-entity recognition application.
 
@@ -67,17 +67,17 @@ The coding process consisted of 4 parts: Data Exploration, Preprocessing, Data s
 
 # Data exploration
 
-In this part we will cover the main features that we discovered during the data exploration. The successful outcome of this block helped us to apply preprocessing and understood the data we were working with. It is important to mention, that in this part we used only metadata dataset which contained all useful information. 
+In this part we will cover the main features that we discovered during the data exploration. The successful outcome of this block helped us to apply preprocessing and understood the data we were working with. It is important to mention, that in this part we used only metadata dataset which contained all useful information for the analysis. 
 
 ## Dataset information
 
 This block is divided by two parts: the general information of a dataset and a language specificity.
 
-- As we can see on a picture, at our disposal are more than one milion papers.
+- First of all, as we can see on a picture, at our disposal are more than one milion papers.
 
 ![Paper's number](assets/images/data_explore_1.png)
 
-- The metadata data collection consists of following columns. 
+- Secondly, the metadata data collection consists of following columns. 
 
 ```python
 ['cord_uid', 'sha', 'source_x', 'title', 'doi', 'pmcid', 'pubmed_id', 
@@ -123,13 +123,13 @@ For a better data collection understanding, it is crucial to know its components
 
 ![Head of the metadata](assets/images/data_explore_2.png)
 
-To be more precise, the number of files that we can work with in the directory is approximately over 300000 json files. The explanation for this is that some papers in the metadata dataset is not available in the json format for us to process and some of them are duplicated.(to fix it)
+To be more clear, the number of files that we can work with in the directory is approximately over 300000 json files, not one million. The explanation for this is that some papers in the metadata dataset is not available in the json format for us to process and some of them are duplicated.
 
 ## Language status of the dataset
 
-During this project, we agreed to work only with english-written articles. That is why we made an analysis that you can see on an image below. As can be observed most of the articles are meeting the requirements. In addition to that, papers that do not respond to the criteria(*check the spelling*) will be deleted in the preprocessing part.
+During this project, we agreed to work only with english-written articles. That is why we made an analysis that you can see on an image below. As can be observed most of the articles are meeting the requirements. In addition to that, papers that do not respond to the criteria will be deleted in the preprocessing part.
 
-To detect the language that is written in the paper, we use a library called langdetect to do it. To speed up the language detect process we will not detect the language of the whole body but only detect on the first part.
+In order to detect english-written papers, we used a library called ```langdetect```. To speed up the language detecting process we used only first 50 words from a body text. The practice shows that this amount of words is enough to 
 
 - Try to detect on the first 50 words of the body text, if the number of words is lower than 50, take the whole text instead.
 
