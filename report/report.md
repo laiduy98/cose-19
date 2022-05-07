@@ -37,13 +37,13 @@ header-includes:
 
 # Abstract
 
-COVID-19 is the disease that caused by the Sar-COV-2 virus that started in China at the end of the year 2019. Over the time, studies has shown that there is some form of background diseases and risk factors that can hugely affect the severity cases rate of COVID-19. This study will apply NLP and text mining methods in order to explore CORD-19 dataset and extract background diseases and risk factors. 
+COVID-19 is the disease that caused by the Sar-COV-2 virus that originated in China at the end of the year 2019. Over the time, studies have shown that there is some form of background diseases and risk factors that can hugely affect the severity cases rate of COVID-19. This project will apply NLP and text mining methods in order to explore CORD-19 dataset and extract background diseases and risk factors. 
 
 ![Cormobilities and symtoms of COVID-19 cases](assets/images/risk_factor.jpeg)
 
 # Introduction
 
-While working on this project, we applied text-processing on CORD-19 dataset. CORD-19 is a data collection of over one million scholarly articles, including over 350,000 with full text, about COVID-19, SARS-CoV-2, and related coronaviruses. The amount of data collected in CORD-19 provided an opportunity for a deep and various analysis, and allowed us to apply different NLP techniques such as LDA(Latent Dirichlet Allocation) and NER(Named-entity recognition). In this block, the structure of our project will be explained. 
+While working on this project, we applied text-processing methods on CORD-19 dataset. CORD-19 is a data collection of over one million scholarly articles, including over 350,000 with full text, about COVID-19, SARS-CoV-2, and related coronaviruses. The amount of data collected in CORD-19 provided an opportunity for a deep and various analysis, and allowed us to apply different NLP techniques such as LDA(Latent Dirichlet Allocation) and NER(Named-entity recognition). In this block, the structure of our project will be explained. 
 
 The coding process consisted of 4 parts: Data Exploration, Preprocessing, Data selection, Named-entity recognition application.
 
@@ -67,15 +67,17 @@ The coding process consisted of 4 parts: Data Exploration, Preprocessing, Data s
 
 # Data exploration
 
+In this part we will cover the main features that we discovered during the data exploration. The successful outcome of this block helped us to apply preprocessing and understood the data we were working with. It is important to mention, that in this part we used only metadata dataset which contained all useful information. 
+
 ## Dataset information
 
-In this We would like to know some fundamental information of the dataset. 
+This block is divided by two parts: the general information of a dataset and a language specificity.
 
-- The metadata csv file shows that there are more than a milion paper that in the data set.
+- As we can see on a picture, at our disposal are more than one milion papers.
 
 ![Paper's number](assets/images/data_explore_1.png)
 
-- Columns that contained in the metadata file include:
+- The metadata data collection consists of following columns. 
 
 ```
 ['cord_uid', 'sha', 'source_x', 'title', 'doi', 'pmcid', 'pubmed_id', 
@@ -83,22 +85,52 @@ In this We would like to know some fundamental information of the dataset.
 'who_covidence_id', 'arxiv_id', 'pdf_json_files', 'pmc_json_files', 
 'url', 's2_id']
 ```
+- `cord_uid`:  A `str`-valued field that assigns a unique identifier to each CORD-19 paper. 
+
+- `sha`:  A `List[str]`-valued field that is the SHA1 of all PDFs associated with the CORD-19 paper.
+
+- `source_x`:  A `List[str]`-valued field that is the names of sources from which we received this paper.
+
+- `title`:  A `str`-valued field for the paper title
+
+- `doi`: A `str`-valued field for the paper DOI
+- `pmcid`: A `str`-valued field for the paper's ID on PubMed Central.
+
+- `pubmed_id`: An `int`-valued field for the paper's ID on PubMed. 
+ 
+- `license`: A `str`-valued field with the most permissive license we've found associated with this paper.
+
+- `abstract`: A `str`-valued field for the paper's abstract
+
+- `publish_time`:  A `str`-valued field for the published date of the paper.  This is in `yyyy-mm-dd` format. 
+
+- `authors`:  A `List[str]`-valued field for the authors of the paper.
+
+- `journal`:  A `str`-valued field for the paper journal.
+
+- `who_covidence_id`:  A `str`-valued field for the ID assigned by the WHO for this paper.
+
+- `arxiv_id`:  A `str`-valued field for the arXiv ID of this paper.
+
+- `pdf_json_files`:  A `List[str]`-valued field containing paths from the root of the current data dump version to the parses of the paper PDFs into JSON format.  
+- `pmc_json_files`:  A `List[str]`-valued field. Same as above, but corresponding to the full text XML files downloaded from PMC, parsed into the same JSON format as above.
+
+- `url`: A `List[str]`-valued field containing all URLs associated with this paper.
+
+- `s2_id`:  A `str`-valued field containing the Semantic Scholar ID for this paper.
 
 ![Head of the metadata](assets/images/data_explore_2.png)
 
-However, if we count the number of file in the directory, there is only over 300000 json files. It means that not all paper that in the metadata is also available in the json format for us to process, as well as might be there are paper that being duplicated. In the preprocessing block, we will remove the row with duplicated and empty abstract
+To be more precise, the number of files that we can work with in the directory is approximately over 300000 json files. The explanation for this is that some papers in the metadata dataset is not available in the json format for us to process and some of them are duplicated.(to fix it)
 
 ## Language status of the dataset
 
-In this particular study, we only focus applying NLP on English papers. We would like to know if there are any other languages in the datasets. 
+During this project, we agreed to work only with english-written articles. That is why we made an analysis that you can see on an image below. As can be observed most of the articles are meeting the requirements. However, papers that do not respond to the criteria(*check the spelling*) will be deleted in the preprocessing part.
 
 ![Language percentage in the dataset](assets/images/lang.png)
 
-As we can see in the figure, most of the papers in the CORD-19 dataset have been written in English. In the preprocessing block, we will apply method to remove papers in other languages.
-
 # Preprocessing
-
-After explore the data, we have the idea of what to do for the next step. This step will first clean the data, including transfer the JSON file that be used in the dataset to pandas dataframe, which is more common to process.
+After explore the data, we have the idea of what to do for the next step. This step will first clean the data, including transfer the JSON file that be used in the dataset to pandas dataframe, which is more common to process. In the preprocessing block, we will remove the row with duplicated and empty abstract
 
 ## Handling multiple languages
 
@@ -169,4 +201,4 @@ Knowledge graph
 
 # References
 
-something here
+https://github.com/allenai/cord19 - this for the metadata desrp
