@@ -55,11 +55,11 @@ In this project we used multiple state of the art NLP and Data Science libraries
 
 - Scispacy: NER, Spacy model for science papers.
 
-- Bokeh: A library for drawing interacted charts.
+- Bokeh: A library for visualising interacted charts.
 
-# Data flow
+# Project Structure
 
-During this project we worked CORD-19 dataset. CORD-19 is a data collection of over one million scholarly articles, including over 350,000 with full text, about COVID-19, SARS-CoV-2, and related coronaviruses. The amount of data collected in CORD-19 is providing us an opportunity for a deep and various analysis, and allowinh us to apply different NLP techniques such as LDA (Latent Dirichlet Allocation) and NER (Named-entity recognition). The main goal of this part is to present a structure of the project.
+During this project we worked with CORD-19 dataset. CORD-19 is a data collection of over one million scholarly articles, including over 350,000 with full text, about COVID-19, SARS-CoV-2, and related coronaviruses. The amount of data collected in CORD-19 is providing us an opportunity for a deep and various analysis, and allowing us to apply different NLP techniques such as LDA (Latent Dirichlet Allocation) and NER (Named-entity recognition). The main goal of this part is to present a structure of the project.
 
 The coding process consisted of 4 parts: Data Exploration, Preprocessing, Data selection, Named-entity recognition application.
 
@@ -145,11 +145,11 @@ To be more clear, the number of files that we can work with in the directory is 
 
 ## Language status of the dataset
 
-During this project, we agreed to work only with english-written articles. That is why we made an analysis that you can see on an image below. As can be observed most of the articles are meeting the requirements. However, papers that do not respond to the criteria will be deleted in the preprocessing part.
+During this project, we agreed to work only with english-written articles. That is why we made an analysis that you can see on an image below. As can be observed most of the articles are meeting the requirements. However, papers that did not respond to the criteria were deleted in the preprocessing part.
 
 In order to detect english-written papers, we used a library called ```langdetect```. To speed up the language detecting process we used only first 50 words from a body text. The practice shows that this amount of words is enough for algorithm to understand if it's english language or not.
 
-- This part of the code is trying to analyse the first 50 words of the body text, however if the number of words is lower than 50, the whole text is analysed.
+- This part of the code is trying to analyse the first 50 words of the body text, however if the number of words is lower than 50, the whole text is processed.
 
 ```python
 if len(text) > 50:
@@ -158,7 +158,7 @@ elif len(text) > 0:
         lang = detect(" ".join(text[:len(text)]))
 ```
 
-- If the detection of the language is impossible when using the body part, the algorithm will try to do the same job but with an abstract.
+- If the detection of the language is impossible while using the body part, the algorithm will try to do the same job but with an abstract.
 
 ```python
 try:
@@ -172,7 +172,7 @@ except Exception as e:
 
 ![Language percentage in the dataset](assets/images/lang.png)
 
-For the final dataframe we randomly picked 10000 english-written papers. It is obviously that the most out of dataset is written in English.
+For the final dataframe we randomly picked 10000 english-written papers. 
 
 
 
@@ -180,7 +180,7 @@ For the final dataframe we randomly picked 10000 english-written papers. It is o
 
 The second part of this project is data preprocessing. It's important to mention, that at this step, we are using not only the metadata dataset, but also we are working with full collection of articles.
 
-- Filter necessary information from metadata and body_text in JSON files.
+- Filtering necessary information from metadata and body texts.
 - Dropping non-english papers
 - Cleaning the data
    - Removing special characters 
@@ -238,7 +238,7 @@ if flg_lemm == True:
 
 ## Risk factor and severe paper filtering
 
-Before applying NER, we sorted papers in a dataframe with a common topic, such as severe  symptoms and risk factors. In order to do it right and in an objective way, we filtered out papers that contained one of the words that was related to risk factors or severity in a predefined dictionary. You can observe the key-words in a word cloud below.
+Before applying NER, we sorted papers in a dataframe with a common topic, such as "severe", "symptoms" and "risk factors". In order to do it right and in an objective way, we filtered out papers that contained one of the words that was related to risk factors or severity in a predefined dictionary.The keywords can be observd in a word cloud below.
 
 ![WordCloud of significant word in filtered list of paper](assets/images/data_preprocessing_1.png)
 
@@ -247,19 +247,15 @@ Before applying NER, we sorted papers in a dataframe with a common topic, such a
 
 At this point of our project, the data is clean and sorted. It means that it is suitable for NLP-training. 
 
-The first thing we did was Topic Modeling using Latent Dirichlet Allocation(LDA). LDA is a generative statistical model that allows sets of observations to be explained by unobserved groups that explain why some parts of the data are similar. It was crucial for us to use LDA because by using topic modeling we discovered a range of articles that was very close to our project theme: risk factors, severity, severe,etc. After successfully applying LDA and choosing the right topic, we fitted our model with the NER. NER  — (Named Entity Recognition)  is a subtask of information extraction that seeks to locate and classify named entities mentioned in unstructured text into predefined categories such as person names, organizations, locations, medical codes, time expressions, quantities, monetary values, percentages, etc. 
-
-Our NER model is special because it can detect diseases that are in science papers.
+The first thing we did was Topic Modeling using Latent Dirichlet Allocation(LDA). LDA is a generative statistical model that allows sets of observations to be explained by unobserved groups that explain why some parts of the data are similar. It was crucial for us to use LDA because by using topic modeling we discovered a range of articles that was very close to our project theme: risk factors, severity, severe,etc. After successfully applying LDA and choosing the right topic, we fitted the data to the NER model. NER  — (Named Entity Recognition) is a subtask of information extraction that seeks to locate and classify named entities mentioned in unstructured text into predefined categories such as person names, organizations, locations, medical codes, time expressions, quantities, monetary values, percentages, etc. For this project we used NER model that can detect diseases. 
 
 # Topic modeling
 
-This is how LDA works.
+The LDA algorithm structure:
 
 - Providing to an algorithm a certain number of topics. 
 - The algorithm is assigning every word to a temporary topic.
 - The algorithm is checking and updating topic assignments.
-
-To choose the appropriate number of topic, we need to run in every topic number and use a method to evaluate. We will use cv coherence score in this case.
 
 ## Evaluation method: coherence score
 
@@ -272,7 +268,7 @@ Briefly, the coherence score measures how similar these words are to each other.
 
 ![LDA iteration=30](assets/images/lda_1.png){ width=50% }
 
-We will try to run it in the range of 3 to 11 topics and see which of the number of topics perform the best.
+We run the LDA model in the range of 3 to 11 topics in order to see which one will perform better.
 
 
 Each time we iterate the c_v coherence score, the value varies. However, for the next step, we decided to work with the data from topic 6.
@@ -280,7 +276,7 @@ Each time we iterate the c_v coherence score, the value varies. However, for the
 
 ## Final dicision in applying Latent Dirichlet Allocation
 
-Run LDA with topic number == 6.
+Running LDA with topic number 6.
 
 ```python
 lda_model = LdaMulticore(corpus=corpus_risk_article,
@@ -299,10 +295,10 @@ Top of the keyword for each topic.
 
 ![Top keywords for each cluster](assets/images/top_word_lda.png)
 
-After examination of the most significant keywords, we made the conclusion that topic 3 was the closest to severity symptoms. Topic 3 has the following  keywords: ‘mortality’, ‘high’, ‘risk’, ‘patient’, ‘case’, ‘severe’, etc. Then, we extracted all documents from the topic 3. Having all papers filtered, we can transfer them to the NER model. 
+After examinating the most significant keywords, we made the conclusion that topic 3 was the closest to severity symptoms. Topic 3 has the following  keywords: ‘mortality’, ‘high’, ‘risk’, ‘patient’, ‘case’, ‘severe’, etc. Then, we extracted all documents from the topic 3. Having all papers filtered, we can transfer them to the NER model. 
 
-By extract the document's topic by using `get_document_topics` method, we have the percentage of each topic contain in the document. We label the document by the highest percentage of a topic that contain in the document.
-
+Extraction of the document’s topic by using get_document_topics method. 
+ 
 ```python
 document_topic = lda_model.get_document_topics(corpus_risk_article[i])
 document_topic_distribution.append(document_topic)
@@ -310,6 +306,7 @@ for idx,document_topic in enumerate(document_topic_distribution):
     for topic_idx,prob in document_topic:
         document_topic_matrix[idx][topic_idx] = prob
 ```
+As a result, we have the percentage of each topic that can be found in the pull of the documents.
 
 
 # Named-identity recognition
@@ -343,7 +340,7 @@ for body_text in tqdm(df['body_text_clean'][:200]):
     named_entities_df = pd.DataFrame({'Entities':entities,'Labels':labels,'Position_Start':position_start, 'Position_End':position_end})
 ```
 
-- Create dictionary that contains extracted entities.
+- Creating the dictionary that contains extracted entities.
 
 ```python
 df_disease = named_entities_df.drop_duplicates(subset=['Entities'])
@@ -439,15 +436,12 @@ Head of the file `disease.csv`
 | 189 | death bpddeath                                                                                                                               | DISEASE |
 | 192 | chorioamnionitis                                                                                                                             | DISEASE |
 | 193 | infection sepsis                                                                                                                             | DISEASE |
-
-These are the final disease that our method pulled out from the CORD-19 dataset. 
+ 
 
 # Future improvement
 
 Speaking of future improvements, it is important to emphasize two things.
 
-First of all, it would be crucial to create a knowledge graph in order to see the relationships between different symptoms and diseases. We are sure that constructing a knowledge graph may give us a more profound and deep image of connections between severity cases and symptoms. It is a very powerful technique and can be used by researchers in order to prevent some severe cases by knowing that some diseases can lead to severe covid. 
-
-Secondly, while working on this project, we found out that, in order to make this project more complex, it is important to calculate the severity rate in order to know which disease is less or more severe. To sum it up, we are hoping to continue to work on this project and implement all this improvement in future.
+First of all, it would be crucial to create a knowledge graph in order to see the relationships between different symptoms and diseases. We are sure that constructing a knowledge graph may give us a more profound and deep image of connections between severity cases and symptoms. It is a very powerful technique and can be used by researchers in order to prevent some severe cases by knowing that some diseases can lead to severe covid. Secondly, while working on this project, we found out that, in order to make this project more complex, it is important to calculate the severity rate in order to know which disease is less or more severe. To sum it up, we are hoping to continue to work on this project and implement all this improvement in future.
 
 
