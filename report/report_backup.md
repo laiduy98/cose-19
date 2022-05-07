@@ -37,13 +37,13 @@ header-includes:
 
 # Abstract
 
-COVID-19 is the disease caused by the Sar-COV-2 virus that originated in China at the end of the year 2019. Over the time, studies have shown that there is some form of background diseases and risk factors that can hugely affect the severity cases rate of COVID-19. This project will apply NLP and text mining methods in order to explore the CORD-19 dataset and extract background diseases and risk factors. 
+COVID-19 is the disease caused by the Sar-COV-2 virus that originated in China at the end of the year 2019. Over the time, studies have shown that there is some form of background diseases and risk factors that can hugely affect the severity cases rate of COVID-19. This project will apply NLP and text mining methods in order to explore the CORD-19 dataset and extract background diseases and risk factors.  
 
 ![Cormobilities and symtoms of COVID-19 cases](assets/images/risk_factor.jpeg)
 
 # Introduction
 
-While working on this project, we applied text-processing methods on CORD-19 dataset.(rephrase idk how) CORD-19 is a data collection of over one million scholarly articles, including over 350,000 with full text, about COVID-19, SARS-CoV-2, and related coronaviruses. The amount of data collected in CORD-19 is providing us an opportunity for a deep and various analysis, and allowed us to apply different NLP techniques such as LDA (Latent Dirichlet Allocation) and NER (Named-entity recognition). The main goal of this part is to present a structure of the project.
+During this project we worked CORD-19 dataset. CORD-19 is a data collection of over one million scholarly articles, including over 350,000 with full text, about COVID-19, SARS-CoV-2, and related coronaviruses. The amount of data collected in CORD-19 is providing us an opportunity for a deep and various analysis, and allowinh us to apply different NLP techniques such as LDA (Latent Dirichlet Allocation) and NER (Named-entity recognition). The main goal of this part is to present a structure of the project.
 
 The coding process consisted of 4 parts: Data Exploration, Preprocessing, Data selection, Named-entity recognition application.
 
@@ -77,7 +77,7 @@ This block is divided by two parts: the general information of a dataset and a l
 
 ![Paper's number](assets/images/data_explore_1.png)
 
-- Secondly, the metadata data collection consists of following columns.  
+- Secondly, the metadata data collection consists of following columns. 
 
 ```python
 ['cord_uid', 'sha', 'source_x', 'title', 'doi', 'pmcid', 'pubmed_id', 
@@ -140,8 +140,6 @@ elif len(text) > 0:
         lang = detect(" ".join(text[:len(text)]))
 ```
 
-- If first 50 words does not work, try to detect with the whole body.
-
 - If the detection of the language is impossible when using the body part, the algorithm will try to do the same job but with an abstract.
 
 ```python
@@ -170,6 +168,7 @@ The second part of this project is data preprocessing. It's important to mention
    - Stemming
 - Removing rows with duplicated and empty abstracts
 
+
 ## Handling multiple languages
 
 As we mentioned earlier, approximately 95% of papers are written in English. To sort them out we created a new column in our dataframe named ```language``` and then used the code below for creating a new dataset only with english-written papers. 
@@ -178,8 +177,7 @@ As we mentioned earlier, approximately 95% of papers are written in English. To 
 df = df_covid[df_covid['language'] == 'en'] 
 ```
 
-## Change from JSON to a more convinient format
-
+## Transfering the JSON to Data Frame format
 The original data is collected in json format, where each file is a representation of an article. However, it is impossible to use
 python preprocessing libraries on json artciles. We solved this issue by transfering all data from json collection into Pandas Data Frame.
 
@@ -187,7 +185,7 @@ python preprocessing libraries on json artciles. We solved this issue by transfe
 
 ```
 
-## Special characters and number remove
+## Removing special characters and numbers
 
 In this part of data preprocessing we removed all numbers and special characters(dots, commas, etc) using the python ```regex``` library.
 
@@ -198,14 +196,12 @@ text = re.sub(r'[^\w\s]', '', str(text).lower().strip())
 ```
 
 ## Tokenization
-
 A tokenization process divides data into chunks of information that can be considered as discrete elements. The token occurrences in a document can be used directly as a vector representing that document.
 
 In this case we used ```split()``` method to tokenize the data.
 
 ## Stemming
-
-Stemming is a natural language processing technique that lowers restore words to their root forms, hence aiding in the preprocessing of text, words, and documents for text normalization. The performance of NLP might be affected with out stemming.
+Stemming is a natural language processing technique that lowers restore words to their root forms, hence aiding in the preprocessing of text, words, and documents for text normalization.
 
 ```    
 if flg_stemm == True:
@@ -214,7 +210,6 @@ if flg_stemm == True:
 ```
 
 ## Lemmatisation
-
 Lemmatization is aslo a NLP technique which is used to reduce words to a normalized form.
 
 ```
@@ -222,11 +217,6 @@ if flg_lemm == True:
         lem = nltk.stem.wordnet.WordNetLemmatizer()
         lst_text = [lem.lemmatize(word) for word in lst_text]
 ```
-
-## Risk factor and severe paper filtering
-
-![WordCloud of significant word in filtered list of paper](assets/images/data_preprocessing_1.png)
-
 
 # Clustering
 
