@@ -37,7 +37,7 @@ header-includes:
 
 # Abstract
 
-COVID-19 is the disease that caused by the Sar-COV-2 virus that originated in China at the end of the year 2019. Over the time, studies have shown that there is some form of background diseases and risk factors that can hugely affect the severity cases rate of COVID-19. This project will apply NLP and text mining methods in order to explore CORD-19 dataset and extract background diseases and risk factors. 
+COVID-19 is the disease that caused by the Sar-COV-2 virus originated in China at the end of the year 2019. Over the time, studies have shown that there is some form of background diseases and risk factors that can hugely affect the severity cases rate of COVID-19. This project will apply NLP and text mining methods in order to explore CORD-19 dataset and extract background diseases and risk factors. 
 
 ![Cormobilities and symtoms of COVID-19 cases](assets/images/risk_factor.jpeg)
 
@@ -58,7 +58,7 @@ The coding process consisted of 4 parts: Data Exploration, Preprocessing, Data s
     - Lemmatisation.
  
 - Data selection
-    - Selecting articles with risk factor and/or severity key-words.
+    - Selecting articles with risk factors and severity key-words.
     - Clustering using Latent Dirichlet Allocation.
 
 - Applying NER (Named-entity recognition).
@@ -125,12 +125,13 @@ To be more precise, the number of files that we can work with in the directory i
 
 ## Language status of the dataset
 
-During this project, we agreed to work only with english-written articles. That is why we made an analysis that you can see on an image below. As can be observed most of the articles are meeting the requirements. However, papers that do not respond to the criteria(*check the spelling*) will be deleted in the preprocessing part.
+During this project, we agreed to work only with english-written articles. That is why we made an analysis that you can see on an image below. As can be observed most of the articles are meeting the requirements. In addition to that, papers that do not respond to the criteria(*check the spelling*) will be deleted in the preprocessing part.
 
 ![Language percentage in the dataset](assets/images/lang.png)
 
 # Preprocessing
-After explore the data, we have the idea of what to do for the next step. This step will first clean the data, including transfer the JSON file that be used in the dataset to pandas dataframe, which is more common to process. In the preprocessing block, we will remove the row with duplicated and empty abstract
+
+The second part of this project is preprocessing. This step will first clean the data, including transfer the JSON file that be used in the dataset to pandas dataframe, which is more common to process. In the preprocessing block, we will remove the row with duplicated and empty abstract
 
 ## Handling multiple languages
 
