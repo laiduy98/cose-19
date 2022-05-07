@@ -79,7 +79,7 @@ This block is divided by two parts: the general information of a dataset and a l
 
 - The metadata data collection consists of following columns. 
 
-```
+```python
 ['cord_uid', 'sha', 'source_x', 'title', 'doi', 'pmcid', 'pubmed_id', 
 'license', 'abstract', 'publish_time', 'authors', 'journal', 'mag_id', 
 'who_covidence_id', 'arxiv_id', 'pdf_json_files', 'pmc_json_files', 
@@ -135,7 +135,55 @@ The second part of this project is preprocessing. This step will first clean the
 
 ## Handling multiple languages
 
-As in the data explore
+As in the data explore, more than 95% of papers are written in English. To detect the language that is written in the paper, we use a library called langdetect to do it. To speed up the language detect process we will not detect the language of the whole body but only detect on the first part.
+
+```python
+# loop through each text
+for ii in tqdm(range(0,len(df_covid))):
+    text = df_covid.iloc[ii]['body_text'].split(" ")
+    lang = "en"
+
+    # only take first 50 words
+    try:
+        if len(text) > 50:
+            lang = detect(" ".join(text[:50]))
+        elif len(text) > 0:
+            lang = detect(" ".join(text[:len(text)]))
+
+    # if first 50 words does not work do on the whole text
+    except Exception as e:
+        all_words = set(text)
+        try:
+            lang = detect(" ".join(all_words))
+
+        if the body not work try the abstract instead
+        except Exception as e:         
+            try:
+                lang = detect(df.iloc[ii]['abstract_summary'])
+            except Exception as e:
+                lang = "unknown"
+                pass
+```
+
+- Try to detect on the first 50 words of the body text, if the number of words is lower than 50, take the whole text instead.
+
+```python
+if len(text) > 50:
+        lang = detect(" ".join(text[:50]))
+elif len(text) > 0:
+        lang = detect(" ".join(text[:len(text)]))
+```
+
+- If first 50 words does not work, try to detect with the whole body.
+
+- If we cannnot detect the language using the body part, try to detect on the abstract.
+
+```python
+try:
+        lang = detect(df.iloc[ii]['abstract_summary'])
+except Exception as e:
+        lang = "unknown"
+```
 
 
 ## Special characters and number remove
