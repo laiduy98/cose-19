@@ -37,13 +37,13 @@ header-includes:
 
 # Abstract
 
-COVID-19 is the disease that caused by the Sar-COV-2 virus originated in China at the end of the year 2019. Over the time, studies have shown that there is some form of background diseases and risk factors that can hugely affect the severity cases rate of COVID-19. This project will apply NLP and text mining methods in order to explore CORD-19 dataset and extract background diseases and risk factors. 
+COVID-19 is the disease caused by the Sar-COV-2 virus that originated in China at the end of the year 2019. Over the time, studies have shown that there is some form of background diseases and risk factors that can hugely affect the severity cases rate of COVID-19. This project will apply NLP and text mining methods in order to explore the CORD-19 dataset and extract background diseases and risk factors. 
 
 ![Cormobilities and symtoms of COVID-19 cases](assets/images/risk_factor.jpeg)
 
 # Introduction
 
-While working on this project, we applied text-processing methods on CORD-19 dataset. CORD-19 is a data collection of over one million scholarly articles, including over 350,000 with full text, about COVID-19, SARS-CoV-2, and related coronaviruses. The amount of data collected in CORD-19 provided an opportunity for a deep and various analysis, and allowed us to apply different NLP techniques such as LDA(Latent Dirichlet Allocation) and NER(Named-entity recognition). In this block, the structure of our project will be explained. 
+While working on this project, we applied text-processing methods on CORD-19 dataset.(rephrase idk how) CORD-19 is a data collection of over one million scholarly articles, including over 350,000 with full text, about COVID-19, SARS-CoV-2, and related coronaviruses. The amount of data collected in CORD-19 is providing us an opportunity for a deep and various analysis, and allowed us to apply different NLP techniques such as LDA (Latent Dirichlet Allocation) and NER (Named-entity recognition). The main goal of this part is to present a structure of the project.
 
 The coding process consisted of 4 parts: Data Exploration, Preprocessing, Data selection, Named-entity recognition application.
 
@@ -85,6 +85,8 @@ This block is divided by two parts: the general information of a dataset and a l
 'who_covidence_id', 'arxiv_id', 'pdf_json_files', 'pmc_json_files', 
 'url', 's2_id']
 ```
+For a better data collection understanding, it is crucial to know its components and its structure: 
+
 - `cord_uid`:  A `str`-valued field that assigns a unique identifier to each CORD-19 paper. 
 
 - `sha`:  A `List[str]`-valued field that is the SHA1 of all PDFs associated with the CORD-19 paper.
