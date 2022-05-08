@@ -243,13 +243,13 @@ Before applying NER, we sorted papers in a dataframe with a common topic, such a
 ![WordCloud of significant word in filtered list of paper](assets/images/data_preprocessing_1.png)
 
 
-## Data processing
+# Data processing
 
 At this point of our project, the data is clean and sorted. It means that it is suitable for NLP-training. 
 
 The first thing we did was Topic Modeling using Latent Dirichlet Allocation(LDA). LDA is a generative statistical model that allows sets of observations to be explained by unobserved groups that explain why some parts of the data are similar. It was crucial for us to use LDA because by using topic modeling we discovered a range of articles that was very close to our project theme: risk factors, severity, severe,etc. After successfully applying LDA and choosing the right topic, we fitted the data to the NER model. NER  — (Named Entity Recognition) is a subtask of information extraction that seeks to locate and classify named entities mentioned in unstructured text into predefined categories such as person names, organizations, locations, medical codes, time expressions, quantities, monetary values, percentages, etc. For this project we used NER model that can detect diseases. 
 
-# Topic modeling
+## Topic modeling
 
 The LDA algorithm structure:
 
@@ -257,7 +257,7 @@ The LDA algorithm structure:
 - The algorithm is assigning every word to a temporary topic.
 - The algorithm is checking and updating topic assignments.
 
-## Evaluation method: coherence score
+### Evaluation method: coherence score
 
 For the evaluation method we used the coherence score. Coherence score in topic modeling is a measure of how interpretable the topics are to humans. In this case, topics are represented as the top N words with the highest probability of belonging to that particular topic. 
 
