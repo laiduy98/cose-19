@@ -112,21 +112,20 @@ During this part, we deleted all non-english articles by using langdetect librar
 
 ### Converting JSON format into DataFrame format.
 
-- Merge body text into the same dataframe with metadata
-- Add column to define language of paper
-- Remove unecessary columns.
+- Merging body text into the dataframe with metadata
+- Adding columns that define language of paper
+- Removing unecessary columns.
 
-### Remove 
-- Filter out only paper with English
+### Data Cleaning 
+- Filtering out papers in english language.
 - Using regex to remove special characters, numbers.
-- Remove stopwords
+- Removing stopwords
 
 ## Data preprocessing
 
 ### Stemming and Lemmatisation
-- Lowers inflection in words to their root forms
-- (connections, connected, connects, is connect)
-- Using NLTK library
+- Lowering inflection of words to their root forms
+- NLTK library was used in order to perform these methods.
 
 ## Data preprocessing
 
@@ -144,8 +143,8 @@ During this part, we deleted all non-english articles by using langdetect librar
 
 ## Risk factors and severity paper filtering
 
-- Create a dictionary of key words related to risk factors and severity.
-- Filter out only the paper that contain words in the dictionary.
+- Creating a dictionary of key words related to risk factors and severity.
+- Filtering out papers that contain words in the pre-defined dictionary.
 
 ## Risk factors and severity paper filtering
 
@@ -186,21 +185,21 @@ The coherence score measures how similar these words are to each other. The high
 
 ## NER
 
-Named entity recognition (NER) is probably the extraction-method that seeks to locate and classify named entities in text into pre-defined categories such as the names of persons, organizations, locations, expressions of times, quantities, monetary values, percentages. In our case it’s biomedical entities: diseases,chemicals etc. 
+Named entity recognition (NER) is the extraction-method that seeks to locate and classify named entities in text into pre-defined categories such as the names of persons, organizations, locations, expressions of times, quantities, monetary values, percentages. In our case it’s biomedical entities: diseases,chemicals etc. 
 
 We used Scispacy library with different SpaCy models for biomedical text processing.
 
 ## NER
 
 ### Scispacy
-- Science pretrain model
-- en_ner_bc5cdr_md for biology, mark diseases and chemicals.
+- Pretrained model for Science Papers.
+- We used en_ner_bc5cdr_md model that operates with for biomedical entities(chemicals,genes,diseases).
 
 # Result
 
 ## Result
 
-Example of table of result
+Example of a result table.
 
 | 0   | chronic obstructive pulmonary disease copd                                                                                                   | DISEASE |
 |-----|----------------------------------------------------------------------------------------------------------------------------------------------|---------|
@@ -223,9 +222,9 @@ To conclude, the deep text-analysis was made. The data was filtered out by using
 
 ## Future improvement
 
-Creating a knowledge graph.
-Calculating the severity rate.
+- Creating a knowledge graph.
+- Calculating the severity rate.
 
-## Thank you
+## Thank you for your attention!
 
-Thank you for your attention.
+Thank you for your attention!
