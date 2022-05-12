@@ -99,7 +99,7 @@ During this part, we deleted all non-english articles by using langdetect librar
 ## Data preprocessing
 
 - Converting JSON format into DataFrame format.
-- Removing all non-english paper.
+- Removing all non-english papers.
 - Removing special characters
 - Removing numbers
 - Tokenizing.
