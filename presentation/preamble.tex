@@ -1,0 +1,31 @@
+\usepackage{tikz}
+\usepackage{pgfpages}
+\setbeameroption{show notes on second screen}
+
+%%%% Create framenumber in footer
+\newcommand{\frameofframes}{/}
+\newcommand{\setframeofframes}[1]{\renewcommand{\frameofframes}{#1}}
+
+\setframeofframes{of}
+\makeatletter
+\setbeamertemplate{footline}
+  {%
+    \begin{beamercolorbox}[colsep=1.5pt]{upper separation line foot}
+    \end{beamercolorbox}
+    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+      leftskip=.3cm,rightskip=.3cm plus1fil]{author in head/foot}%
+      \leavevmode{\usebeamerfont{author in head/foot}\insertshortauthor}%
+      \hfill%
+      {\usebeamerfont{institute in head/foot}\usebeamercolor[bg]{institute in head/foot}\insertshortinstitute}%
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[ht=2.5ex,dp=1.125ex,%
+      leftskip=.3cm,rightskip=.3cm plus1fil]{title in head/foot}%
+      {\usebeamerfont{title in head/foot}\insertshorttitle}%
+      \hfill%
+      {\usebeamerfont{frame number}\usebeamercolor[fg]{frame number}\insertframenumber~\frameofframes~\inserttotalframenumber}
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[colsep=1.5pt]{lower separation line foot}  
+    \end{beamercolorbox}
+  }
+\author[LAI - KLIMINA]{\textbf{Presenter:} Hoang Do Duy Huy\textsuperscript{1} \newline \and \textbf{Supervisor:} Daniel Hagimont \inst{2,3}}
+\institute[Université Paris Cité]{ University Paris Cité \and UFR des Sciences Fondamentales et Biomédicales}
