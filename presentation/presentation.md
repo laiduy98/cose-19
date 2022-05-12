@@ -219,14 +219,13 @@ Example of table of result
 
 ## Conclusion
 
-- Basic diseases are filtered out
-- The method have not sorted if the disease is a covid symtoms or related to the progress of severity cases.
+To conclude, the deep text-analysis was made. The data was filtered out by using several techniques such as LDA topic modeling and NER. As a result we generated the dataframe table with all covid-related diseases being sorted by a tag «Disease».
 
 ## Future improvement
 
-- Create a knowledge graph
-- Calculate the severity rate
+Creating a knowledge graph.
+Calculating the severity rate.
 
 ## Thank you
 
-Thank you for your listening.
+Thank you for your attention.
