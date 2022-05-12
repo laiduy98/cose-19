@@ -138,7 +138,7 @@ The LDA algorithm structure:
 - The algorithm is assigning every word to a temporary topic. 
 - The algorithm is checking and updating topic assignments.
 
-# LDA
+## LDA
 
 ::: columns
 
@@ -146,7 +146,7 @@ The LDA algorithm structure:
 
 ![](assets/images/lda_1.png){height=50%}
 
-![](assets/images/lda_2.png){height=50%}
+![](assets/images/lda_3.png){height=50%}
 
 ::::
 
