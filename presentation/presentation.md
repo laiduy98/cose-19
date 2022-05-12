@@ -110,6 +110,28 @@ During this part, we deleted all non-english articles by using langdetect librar
 
 ## Data preprocessing
 
+### Converting JSON format into DataFrame format.
+
+- Merge body text into the same dataframe with metadata
+- Add column to define language of paper
+- Remove unecessary columns.
+
+### Remove 
+- Filter out only paper with English
+- Using regex to remove special characters, numbers.
+- Remove stopwords
+
+## Data preprocessing
+
+### Stemming and Lemmatisation
+- Lowers inflection in words to their root forms
+- (connections, connected, connects, is connect)
+- Using NLTK library
+
+## Data preprocessing
+
+![](https://cdn.discordapp.com/attachments/927852048202989578/971071777230966834/Screen_Shot_2022-05-03_at_17.32.24.png)
+
 # Data processing
 
 ## Data processing
@@ -122,7 +144,8 @@ During this part, we deleted all non-english articles by using langdetect librar
 
 ## Risk factors and severity paper filtering
 
-Dictionary of key words
+- Create a dictionary of key words related to risk factors and severity.
+- Filter out only the paper that contain words in the dictionary.
 
 ## Risk factors and severity paper filtering
 
@@ -162,6 +185,16 @@ The coherence score measures how similar these words are to each other. The high
 ![](assets/images/top_word_lda.png)
 
 ## NER
+
+Named entity recognition (NER) is probably the extraction-method that seeks to locate and classify named entities in text into pre-defined categories such as the names of persons, organizations, locations, expressions of times, quantities, monetary values, percentages. In our case it’s biomedical entities: diseases,chemicals etc. 
+
+We used Scispacy library with different SpaCy models for biomedical text processing.
+
+## NER
+
+### Scispacy
+- Science pretrain model
+- en_ner_bc5cdr_md for biology, mark diseases and chemicals.
 
 # Result
 
